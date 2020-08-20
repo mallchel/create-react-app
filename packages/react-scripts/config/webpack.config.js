@@ -54,11 +54,18 @@ const imageInlineSizeLimit = parseInt(
 // Check if TypeScript is setup
 const useTypeScript = fs.existsSync(paths.appTsConfig);
 
+// Custom config @mallchel/react-scripts
+const modifyVarsFilePath =
+  process.env.REACT_APP_MODIFY_VARS_FILE_NAME &&
+  paths.appPath + '/' + process.env.REACT_APP_MODIFY_VARS_FILE_NAME;
+
 // style files regexes
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
+const lessRegex = /\.less$/;
+const lessModuleRegex = /\.module\.less$/;
 
 // This is the production and development configuration.
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
@@ -128,9 +135,10 @@ module.exports = function(webpackEnv) {
           },
         },
         {
-          loader: require.resolve(preProcessor),
+          loader: require.resolve(preProcessor.loader || preProcessor),
           options: {
             sourceMap: true,
+            ...preProcessor.options,
           },
         }
       );
@@ -533,6 +541,42 @@ module.exports = function(webpackEnv) {
                   },
                 },
                 'sass-loader'
+              ),
+            },
+            // Less
+            {
+              test: lessRegex,
+              exclude: lessModuleRegex,
+              use: getStyleLoaders(
+                {
+                  importLoaders: 2,
+                  sourceMap: isEnvProduction && shouldUseSourceMap,
+                },
+                {
+                  loader: 'less-loader',
+                  options: {
+                    modifyVars: modifyVarsFilePath && require(modifyVarsFilePath),
+                    javascriptEnabled: true,
+                  },
+                }
+              ),
+            },
+            {
+              test: lessModuleRegex,
+              use: getStyleLoaders(
+                {
+                  importLoaders: 2,
+                  sourceMap: isEnvProduction && shouldUseSourceMap,
+                  modules: true,
+                  getLocalIdent: getCSSModuleLocalIdent,
+                },
+                {
+                  loader: 'less-loader',
+                  options: {
+                    modifyVars: modifyVarsFilePath && require(modifyVarsFilePath),
+                    javascriptEnabled: true,
+                  },
+                }
               ),
             },
             // "file" loader makes sure those assets get served by WebpackDevServer.

@@ -12,10 +12,13 @@ If you have questions or need help, please ask in our [Spectrum](https://spectru
 ## Quick Overview
 
 ```sh
-npx create-react-app my-app
+npx create-react-app my-app --scripts-version @mallchel/react-scripts
 cd my-app
 npm start
 ```
+
+## Configuration options
+REACT_APP_MODIFY_VARS_FILE_NAME - modifyVars file
 
 If you've previously installed `create-react-app` globally via `npm install -g create-react-app`, we recommend you uninstall the package using `npm uninstall -g create-react-app` to ensure that npx always uses the latest version.
 
