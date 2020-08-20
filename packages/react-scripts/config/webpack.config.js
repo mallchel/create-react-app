@@ -54,11 +54,6 @@ const imageInlineSizeLimit = parseInt(
 // Check if TypeScript is setup
 const useTypeScript = fs.existsSync(paths.appTsConfig);
 
-// Custom config @mallchel/react-scripts
-const modifyVarsFilePath =
-  process.env.REACT_APP_MODIFY_VARS_FILE_NAME &&
-  paths.appPath + '/' + process.env.REACT_APP_MODIFY_VARS_FILE_NAME;
-
 // style files regexes
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
@@ -554,10 +549,6 @@ module.exports = function(webpackEnv) {
                 },
                 {
                   loader: 'less-loader',
-                  options: {
-                    modifyVars: modifyVarsFilePath && require(modifyVarsFilePath),
-                    javascriptEnabled: true,
-                  },
                 }
               ),
             },
@@ -572,10 +563,6 @@ module.exports = function(webpackEnv) {
                 },
                 {
                   loader: 'less-loader',
-                  options: {
-                    modifyVars: modifyVarsFilePath && require(modifyVarsFilePath),
-                    javascriptEnabled: true,
-                  },
                 }
               ),
             },
