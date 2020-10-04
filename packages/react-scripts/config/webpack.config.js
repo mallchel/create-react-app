@@ -549,6 +549,9 @@ module.exports = function(webpackEnv) {
                 },
                 {
                   loader: 'less-loader',
+                  options: {
+                    lessOptions: { javascriptEnabled: true },
+                  }
                 }
               ),
             },
